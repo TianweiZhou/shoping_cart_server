@@ -1,0 +1,4 @@
+{
+    "mongoDBConnectURI" : "mongodb+srv://ZHOU:Ztw199481@cluster0-unu2f.mongodb.net/mean_stack_project?retryWrites=true&w=majority",
+    "jwsecret" : "secret"
+}
