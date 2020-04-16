@@ -6,7 +6,7 @@ let Product = require('../models/Product');
 //route Get api/product
 router.get('/', async (req, res) => {
   try {
-    const data = await Product.find();
+    let data = await Product.find();
     res.send(data);
   } catch (err) {
     res.status(500).send('Server error');
@@ -49,25 +49,28 @@ router.post(
 
 //route Post api/product/cart
 //generates the list of products in the cart
-router.post('/cart', (req, res) => {
-  let products = [];
-  let id = null;
-  let cart = JSON.parse(req.body.cart);
+router.post('/cart', async(req, res) => {
+  cartProducts = [];
 
+  const cart = JSON.parse(req.body.cart);
   if (!cart) {
     return res.send(products)
   }
+  for (const property in cart) {
+    let id = property;
+    let quantity = cart[property]
+    //find id in database
+    let p = await Product.findById(id);
 
-  for (var i = 0; i < data.products.length; i++) {
-    id = data.products[i].id;
+    let newProduct = {
+      name:p.name,
+      qty:quantity,
+      price:p.price
+    };
+    cartProducts.push(newProduct);
     
-
-    if (cart.hasOwnProperty(id)) {
-      data.products[i].qty = cart[id]
-      products.push(data.products[i]);
-    }
   }
-  return res.send(products);
+  return res.send(cartProducts);
 });
 
 module.exports = router;
